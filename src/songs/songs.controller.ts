@@ -1,11 +1,23 @@
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Inject, Param, ParseIntPipe, Post, Put, Scope } from '@nestjs/common';
 import { SongsService } from './songs.service';
 import { CreateSongDTO } from './data_transfer_object/create-songs-dto';
+import { Connection} from 'src/common/constant/connection';
 
-@Controller('songs')
+
+@Controller({
+    path:'songs',
+    scope:Scope.REQUEST
+})
 export class SongsController {
-    constructor(private songsService:SongsService){}
+    constructor(
+        private songsService:SongsService,
+        // inject provider to connect to database
+        @Inject('CONNECTION')
+        private connection:Connection
+    ){
+        console.log("connect to establish to :", connection.CONNECTION_STRING);
+    }
 
 @Post()
 create(@Body() createSongDTO:CreateSongDTO) {

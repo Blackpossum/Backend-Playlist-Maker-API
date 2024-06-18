@@ -1,7 +1,10 @@
 /* eslint-disable prettier/prettier */
-import { Injectable } from '@nestjs/common';
+import { Injectable, Scope } from '@nestjs/common';
 
-@Injectable()
+@Injectable({
+    scope: Scope.TRANSIENT,
+    
+})
 export class SongsService {
     private readonly songs = [];
     create(song) {
