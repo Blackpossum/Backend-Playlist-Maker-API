@@ -3,6 +3,7 @@ import { Body, Controller, Delete, Get, HttpException, HttpStatus, Inject, Param
 import { SongsService } from './songs.service';
 import { CreateSongDTO } from './data_transfer_object/create-songs-dto';
 import { Connection} from 'src/common/constant/connection';
+import { song } from './songs.entity';
 
 
 @Controller({
@@ -20,12 +21,12 @@ export class SongsController {
     }
 
 @Post()
-create(@Body() createSongDTO:CreateSongDTO) {
+create(@Body() createSongDTO:CreateSongDTO):Promise<song> {
   return this.songsService.create(createSongDTO);
 }
 
 @Get()
-findAll(): any {
+findAll():Promise<song[]> {
     try{
         return this.songsService.findAll();
     }
@@ -47,8 +48,8 @@ findOne(
     //use ParseIntPipe to convert the value into Number
     @Param('id',ParseIntPipe) 
     id: number,
-) {
-    return `serve : song ${id} that requested`
+):Promise<song> {
+    return this.songsService.findOne(id)
 }
 
 @Put(':id')
@@ -58,8 +59,8 @@ update():string {
 }
 
 @Delete(':id')
-DeleteSongs():string {
-    return `Delete song based on id`
+deleteSong(@Param('id', ParseIntPipe) id:number):Promise<void> {
+    return this.songsService.remove(id);
 }
 }
 

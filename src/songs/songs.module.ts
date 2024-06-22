@@ -3,6 +3,8 @@ import { Module} from '@nestjs/common';
 import { SongsController } from './songs.controller';
 import { SongsService } from './songs.service';
 import { connection } from 'src/common/constant/connection';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { song } from './songs.entity';
 
 
 // for classbase providers
@@ -13,6 +15,7 @@ import { connection } from 'src/common/constant/connection';
 // };
 
 @Module({
+  imports: [TypeOrmModule.forFeature([song])],
   controllers: [SongsController],
   providers: [
     // standard provider technique
